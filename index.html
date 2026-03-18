@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Timetable Generator — NLP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <h1>Smart Timetable Generator</h1>
+      <p>NLP-powered scheduling system &nbsp;
+        <span class="badge badge-blue">NER</span>
+        <span class="badge badge-teal">Intent Detection</span>
+        <span class="badge badge-purple">Constraint Parsing</span>
+      </p>
+    </div>
+
+    <!-- NLP Command Input -->
+    <div class="section">
+      <div class="section-title">NLP command input</div>
+      <div class="nlp-input-row">
+        <input id="nlpInput" type="text" placeholder='Try: "Schedule Math with Dr. Sharma on Monday morning in Room 101"' />
+        <button onclick="parseNLP()">Parse ↗</button>
+      </div>
+      <div class="nlp-parse" id="nlpFeedback">Type a natural language command above to add subjects, assign teachers, or set constraints.</div>
+      <div class="chips" id="constraintChips"></div>
+    </div>
+
+    <div class="two-col">
+      <!-- Subjects -->
+      <div class="section">
+        <div class="section-title">Subjects</div>
+        <div class="add-row">
+          <input id="subjectInput" type="text" placeholder="Subject name" />
+          <input id="hoursInput" type="number" min="1" max="6" placeholder="Hrs/wk" style="max-width:80px" />
+          <button onclick="addSubject()">Add</button>
+        </div>
+        <div id="subjectList"></div>
+      </div>
+
+      <!-- Teachers -->
+      <div class="section">
+        <div class="section-title">Teachers</div>
+        <div class="add-row">
+          <input id="teacherInput" type="text" placeholder="Teacher name" />
+          <input id="teacherSubject" type="text" placeholder="Subject" />
+          <button onclick="addTeacher()">Add</button>
+        </div>
+        <div id="teacherList"></div>
+      </div>
+    </div>
+
+    <!-- Constraints -->
+    <div class="section">
+      <div class="section-title">Constraints (parsed automatically from NLP)</div>
+      <div class="add-row">
+        <select id="constraintType">
+          <option value="unavailable">Teacher unavailable</option>
+          <option value="preferred">Preferred slot</option>
+          <option value="room">Room assignment</option>
+          <option value="consecutive">No consecutive classes</option>
+        </select>
+        <input id="constraintDetail" type="text" placeholder="e.g. Dr. Sharma not on Friday" />
+        <button onclick="addConstraintManual()">Add</button>
+      </div>
+      <div id="constraintList"></div>
+    </div>
+
+    <!-- Generate Button -->
+    <button class="generate-btn" onclick="generateTimetable()">Generate Timetable</button>
+
+    <!-- Timetable Output -->
+    <div class="section" id="outputSection" style="display:none">
+      <div class="section-title">Generated timetable</div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#E6F1FB;border:1px solid #378ADD"></div> Science / Physics</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#E1F5EE;border:1px solid #1D9E75"></div> Mathematics</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EEEDFE;border:1px solid #7F77DD"></div> Language / English</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FAECE7;border:1px solid #D85A30"></div> Chemistry</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#EAF3DE;border:1px solid #639922"></div> Computer Science</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#FAEEDA;border:1px solid #EF9F27"></div> Other</div>
+      </div>
+      <div class="timetable-wrap">
+        <table id="timetableTable"></table>
+      </div>
+      <div id="statusMsg"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
